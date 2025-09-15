@@ -1,12 +1,10 @@
-# 加载必要的库#### mapping 3d scatter 
+
 library(dplyr)
 library(scatterplot3d)
 
-# 读取数据
 file_path <- "/Users/yuchang/Desktop/processed_living_area_with_code.csv"
 df <- read.csv(file_path)
 
-# 按 Canton 代码进行分组统计，计算均值
 canton_summary <- df %>%
   group_by(canton) %>%
   summarise(
@@ -15,7 +13,6 @@ canton_summary <- df %>%
     mean_urban_LST = mean(Urban_LST_Mean, na.rm = TRUE)
   )
 
-# 绘制三维散点图
 scatter_3d <- scatterplot3d(canton_summary$mean_heatwave_prob, 
                             canton_summary$mean_heatwave_days, 
                             canton_summary$mean_urban_LST,
@@ -25,13 +22,11 @@ scatter_3d <- scatterplot3d(canton_summary$mean_heatwave_prob,
                             zlab = "Urban LST Mean",
                             main = "3D Scatter Plot of Heat Stress Indicators by Canton")
 
-# 添加 Canton 代码标注
 text(scatter_3d$xyz.convert(canton_summary$mean_heatwave_prob, 
                             canton_summary$mean_heatwave_days, 
                             canton_summary$mean_urban_LST), 
      labels = canton_summary$canton, cex = 0.8, pos = 3, col = "red")
 
-# 打印数据表
 print(canton_summary)
 
 
